@@ -55,9 +55,11 @@ Keep a pass counter `k`, starting at 0. Add 1 each time you review a new
 head commit.
 
 1. **Wait** for `REVIEW REQUEST`.
-2. **Sync.** `git checkout --detach <head SHA>` and confirm
-   `git rev-parse HEAD` matches. Review the diff with
-   `git diff <base>...HEAD`.
+2. **Verify.** Never change the working tree or `HEAD`; the implementor
+   owns it and is waiting on you. Confirm
+   `test "$(git rev-parse HEAD)" = "<head SHA>"`. If it does not match,
+   stop and message `lead` asking for the expected branch to be restored.
+   Otherwise review the diff with `git diff <base>...<head SHA>`.
 3. **Review** against the design. Check: does the code do what the design
    says; are the key paths tested; are there bugs, missed edge cases, or
    pattern violations? On pass 2+, first verify each earlier blocking
