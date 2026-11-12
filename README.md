@@ -35,9 +35,9 @@ including a JIRA ticket number):
 
 | Agent         | Job                                                                    | Owns                        |
 | ---           | ---                                                                    | ---                         |
-| `architect`   | Turns the task into a design and plan using [PDD](skills/pdd/SKILL.md) | `.team/design.md`           |
+| `architect`   | Turns the task into a design and plan using [PDD](skills/pdd/SKILL.md) | `.team/<run-id>/design.md` |
 | `implementor` | Builds the plan with TDD, then fixes review findings                   | The git branch              |
-| `reviewer`    | Reviews the branch against the design; never edits code                | `.team/reviews/review-N.md` |
+| `reviewer`    | Reviews the branch against the design; never edits code                | `.team/<run-id>/review.md`  |
 | `lead`        | You, or your session. Spawns the team and handles escalations          | —                           |
 
 
@@ -48,12 +48,12 @@ sequenceDiagram
     participant I as implementor
     participant R as reviewer
     L->>A: spawn with task
-    A->>A: write .team/design.md
+    A->>A: write .team/&lt;run-id&gt;/design.md
     A->>I: PLAN READY (path to design.md)
     I->>A: PLAN ACK
     I->>I: build plan, one commit per step
     I->>R: REVIEW REQUEST (branch, SHA)
-    R->>R: write .team/reviews/review-1.md
+    R->>R: write .team/&lt;run-id&gt;/review.md
     R->>I: REVIEW FINDINGS (path)
     I-->>A: DESIGN QUESTION (if needed)
     A-->>I: DESIGN ANSWER

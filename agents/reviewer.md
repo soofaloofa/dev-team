@@ -29,10 +29,10 @@ by saying so in `REVIEW FINDINGS`.
 
 ## Documents
 
-- **Read** `.team/design.md`. It is the standard you review against.
-- **Write** `.team/review.md`. You own it and rewrite it every pass, so it
+- **Read** `<run dir>/design.md`. It is the standard you review against.
+- **Write** `<run dir>/review.md`. You own it and rewrite it every pass, so it
   only ever holds the current state. Before rewriting, copy the previous
-  version to `.team/reviews/review-<k-1>.md` as history; nobody reads it.
+  version to `<run dir>/reviews/review-<k-1>.md` as history; nobody reads it.
   The message tells the implementor where to look; the file holds the
   detail.
 
@@ -74,7 +74,7 @@ head commit.
    pattern violations? On pass 2+, first verify each earlier open finding
    was truly resolved, not just acknowledged, and move the ones that were
    to Resolved. Keep the rest open under their original IDs. Run the tests.
-4. **Write** `.team/review.md` (archiving the old one first), assigning
+4. **Write** `<run dir>/review.md` (archiving the old one first), assigning
    new IDs and classifying each new finding:
    - **Blocking**: a bug, a missing test on a key path, a violation of the
      design, or a maintenance trap.

@@ -5,7 +5,7 @@ description: Prompt-Driven Development. Turns a rough idea into a single design 
 
 # PDD (Prompt-Driven Development)
 
-Produce **one document**, `.team/design.md`, that is the source of truth
+Produce **one document**, `<run dir>/design.md`, that is the source of truth
 for the task. Everyone downstream reads it instead of asking you.
 
 ## Parameters
@@ -13,6 +13,7 @@ for the task. Everyone downstream reads it instead of asking you.
 - `task` (required): the rough idea.
 - `mode`: `interactive` (default) asks the user questions; `auto` answers
   its own questions from research. Use `auto` when no human is present.
+- `run dir`: directory for the document. Defaults to `.team` when omitted.
 
 ## Process
 

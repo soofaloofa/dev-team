@@ -18,21 +18,21 @@ message you send starts with a header line, then the listed fields.
 
 | Direction | Header | Contents |
 | --- | --- | --- |
-| from `architect` | `PLAN READY` | Path to `.team/design.md` and a summary. |
+| from `architect` | `PLAN READY` | Path to `<run dir>/design.md` and a summary. |
 | to `architect` | `PLAN ACK` | You read the whole design. |
 | to `architect` | `DESIGN QUESTION` | Question, what you tried, options you see. |
 | from `architect` | `DESIGN ANSWER` | Answer; may name a changed section of the design. |
 | to `reviewer` | `REVIEW REQUEST` | Branch, head SHA, summary, areas you are least sure about, any deviations from the plan. |
-| from `reviewer` | `REVIEW FINDINGS` | Path to `.team/review.md`, open blocking and non-blocking counts. |
+| from `reviewer` | `REVIEW FINDINGS` | Path to `<run dir>/review.md`, open blocking and non-blocking counts. |
 | to `reviewer` | `FIXES READY` | New head SHA and, per finding ID, `fixed` or `not fixed (reason)`. |
 | to `lead` | (free text) | Only when blocked and `architect` cannot help. |
 
 ## Process
 
-1. **Read the design.** On `PLAN READY`, read `.team/design.md` completely.
+1. **Read the design.** On `PLAN READY`, read `<run dir>/design.md` completely.
    If anything is unclear, send `DESIGN QUESTION` before writing code. Do
    not improvise around gaps. Then send `PLAN ACK`.
-2. **Branch.** Create `team/<short-kebab-summary>` from the base branch.
+2. **Branch.** Create `team/<run-id>` from the base branch.
 3. **Build one plan step at a time.** For each unchecked step in the plan:
    write a failing test, make it pass with the minimum code, run the full
    suite, commit. One commit per step, with a clear message.
@@ -41,7 +41,7 @@ message you send starts with a header line, then the listed fields.
    `design.md`.
 5. **Request review.** When every step is done and tests pass, send
    `REVIEW REQUEST`.
-6. **Address findings.** On `REVIEW FINDINGS`, read `.team/review.md`. It holds only open
+6. **Address findings.** On `REVIEW FINDINGS`, read `<run dir>/review.md`. It holds only open
    findings, each with a stable ID. Fix blocking findings first, then non-blocking ones that are cheap and
    clearly right. A design-level finding goes to `architect` as a
    `DESIGN QUESTION`; wait for the `DESIGN ANSWER` before changing that

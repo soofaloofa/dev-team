@@ -15,15 +15,21 @@ other directly; do not relay messages between them.
 - **N**: maximum review cycles. Use the number the user gave, else 3.
 - **Base branch**: from `git symbolic-ref --short refs/remotes/origin/HEAD`,
   falling back to the current branch.
+- **Run ID**: `<slug>-<YYYYMMDD-HHMMSS>`, where `<slug>` is a kebab-case
+  summary of the task, at most 4 words. Example: `returned-count-20260512-143005`.
+  The run ID keeps concurrent or repeated runs from colliding.
 
 ## Step 2: Create the shared workspace
 
 ```bash
-mkdir -p .team/reviews
-echo '.team/' >> "$(git rev-parse --git-path info/exclude)"
+RUN_DIR=".team/<run-id>"
+mkdir -p "$RUN_DIR/reviews"
+EXCL="$(git rev-parse --git-path info/exclude)"
+grep -qx '.team/' "$EXCL" 2>/dev/null || echo '.team/' >> "$EXCL"
 ```
 
-`.team/` holds the documents the team shares. It is never committed.
+`.team/<run-id>/` holds the documents this run shares. `.team/` is never
+committed. Old run directories are left in place; the user prunes them.
 
 ## Step 3: Spawn the team
 
@@ -34,6 +40,8 @@ Spawn three teammates with these exact names: `architect`, `implementor`,
 Run context
 - Task: {task}
 - Base branch: {base}
+- Run ID: {run-id}
+- Run dir: .team/{run-id}  (all shared documents live here)
 - Maximum review cycles N: {N}
 - Lead: address messages to `lead`
 - Teammates: architect, implementor, reviewer
