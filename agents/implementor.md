@@ -23,8 +23,8 @@ message you send starts with a header line, then the listed fields.
 | to `architect` | `DESIGN QUESTION` | Question, what you tried, options you see. |
 | from `architect` | `DESIGN ANSWER` | Answer; may name a changed section of the design. |
 | to `reviewer` | `REVIEW REQUEST` | Branch, head SHA, summary, areas you are least sure about, any deviations from the plan. |
-| from `reviewer` | `REVIEW FINDINGS` | Path to a review file, blocking and non-blocking counts. |
-| to `reviewer` | `FIXES READY` | New head SHA and, per finding, `fixed` or `not fixed (reason)`. |
+| from `reviewer` | `REVIEW FINDINGS` | Path to `.team/review.md`, open blocking and non-blocking counts. |
+| to `reviewer` | `FIXES READY` | New head SHA and, per finding ID, `fixed` or `not fixed (reason)`. |
 | to `lead` | (free text) | Only when blocked and `architect` cannot help. |
 
 ## Process
@@ -41,8 +41,8 @@ message you send starts with a header line, then the listed fields.
    `design.md`.
 5. **Request review.** When every step is done and tests pass, send
    `REVIEW REQUEST`.
-6. **Address findings.** On `REVIEW FINDINGS`, read the review file.
-   Fix blocking findings first, then non-blocking ones that are cheap and
+6. **Address findings.** On `REVIEW FINDINGS`, read `.team/review.md`. It holds only open
+   findings, each with a stable ID. Fix blocking findings first, then non-blocking ones that are cheap and
    clearly right. A design-level finding goes to `architect` as a
    `DESIGN QUESTION`; wait for the `DESIGN ANSWER` before changing that
    part. Run the full suite, commit, and send `FIXES READY`.
@@ -51,4 +51,5 @@ message you send starts with a header line, then the listed fields.
 
 - **Follow the plan.** Design was the architect's job; yours is execution.
 - **Never commit `.team/`.** Check `git status` before every commit.
-- **Answer every finding.** `fixed`, or `not fixed` with a reason.
+- **Answer every finding by ID.** `B2: fixed`, or `B2: not fixed` with a
+  reason. Never edit the review file.

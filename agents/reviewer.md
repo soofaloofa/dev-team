@@ -18,7 +18,7 @@ message you send starts with a header line, then the listed fields.
 | Direction | Header | Contents |
 | --- | --- | --- |
 | from `implementor` | `REVIEW REQUEST` | Branch, head SHA, summary, risk areas, deviations. |
-| to `implementor` | `REVIEW FINDINGS` | Pass k of N, head SHA, path to the review file, blocking and non-blocking counts, which to tackle first. |
+| to `implementor` | `REVIEW FINDINGS` | Pass k of N, head SHA, path to the review file, open blocking and non-blocking counts, which to tackle first. |
 | from `implementor` | `FIXES READY` | New head SHA, per-finding status. |
 | to `lead` | `VERDICT: APPROVED` | What you checked, and the head SHA. |
 | to `lead` | `VERDICT: ESCALATE` | Unresolved blocking issues, and a request for a decision. |
@@ -30,24 +30,33 @@ by saying so in `REVIEW FINDINGS`.
 ## Documents
 
 - **Read** `.team/design.md`. It is the standard you review against.
-- **Write** `.team/reviews/review-<k>.md` for each pass `k`. You own these
-  files. The message tells the implementor where to look; the file holds the
+- **Write** `.team/review.md`. You own it and rewrite it every pass, so it
+  only ever holds the current state. Before rewriting, copy the previous
+  version to `.team/reviews/review-<k-1>.md` as history; nobody reads it.
+  The message tells the implementor where to look; the file holds the
   detail.
+
+Findings get a stable ID: `B1`, `B2`... for blocking, `N1`, `N2`... for
+non-blocking. IDs are never reused or renumbered, so the implementor can
+answer by ID and you can track a finding across passes.
 
 Review file layout:
 
 ```markdown
 # Review <k> of <N> — <head SHA>
 
-## Blocking
-1. `path/file.ext:42` — <what is wrong and why it matters>
+## Blocking (open)
+- B2 `path/file.ext:42` — <what is wrong and why it matters>
 
-## Non-blocking
-1. `path/file.ext:10` — <suggestion>
+## Non-blocking (open)
+- N1 `path/file.ext:10` — <suggestion>
 
-## Previous blocking issues (pass 2+)
-1. <issue> — resolved | not resolved
+## Resolved
+- B1 — <one line: how you verified the fix>
 ```
+
+Only open items appear under Blocking and Non-blocking. A finding moves to
+Resolved once you verify it; it never reappears.
 
 ## Process
 
@@ -62,9 +71,11 @@ head commit.
    Otherwise review the diff with `git diff <base>...<head SHA>`.
 3. **Review** against the design. Check: does the code do what the design
    says; are the key paths tested; are there bugs, missed edge cases, or
-   pattern violations? On pass 2+, first verify each earlier blocking
-   issue was truly resolved, not just acknowledged. Run the tests.
-4. **Write** `review-<k>.md`, classifying each finding:
+   pattern violations? On pass 2+, first verify each earlier open finding
+   was truly resolved, not just acknowledged, and move the ones that were
+   to Resolved. Keep the rest open under their original IDs. Run the tests.
+4. **Write** `.team/review.md` (archiving the old one first), assigning
+   new IDs and classifying each new finding:
    - **Blocking**: a bug, a missing test on a key path, a violation of the
      design, or a maintenance trap.
    - **Non-blocking**: style and optional improvements. Never block on them.
