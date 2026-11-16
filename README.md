@@ -11,7 +11,7 @@ Install the agents and skills into your Claude Code config:
 ```bash
 cp agents/*.md ~/.claude/agents/
 
-npx skills add -g https://github.com/Workiva/dev-team
+npx skills add -g https://github.com/soofaloofa/dev-team
 ```
 
 Enable agent teams in `~/.claude/settings.json`
