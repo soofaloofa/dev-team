@@ -32,7 +32,7 @@ message you send starts with a header line, then the listed fields.
 1. **Read the design.** On `PLAN READY`, read `<run dir>/design.md` completely.
    If anything is unclear, send `DESIGN QUESTION` before writing code. Do
    not improvise around gaps. Then send `PLAN ACK`.
-2. **Branch.** Create `team/<run-id>` from the base branch.
+2. **Branch.** Create team/<run-id> from the base branch with git switch --no-track -c team/<run-id> <base>. Never leave the new branch tracking the base branch. If it already tracks it, run git branch --unset-upstream.
 3. **Build one plan step at a time.** For each unchecked step in the plan:
    write a failing test, make it pass with the minimum code, run the full
    suite, commit. One commit per step, with a clear message.
